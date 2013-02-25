@@ -1,0 +1,17 @@
+{
+	"driver" : "SQL Server",
+	"ext" :
+	{
+		"server" : "server\\name",
+		"database" : "db",
+		"uid" : "uid",
+		"pwd" : "password"
+	},
+	"int" :
+	{
+		"server" : "server\\name",
+		"database": "db",
+		"uid" : "uid",
+		"pwd" : "password"
+	}
+}
