@@ -2,7 +2,7 @@
 Created on Feb 22, 2012
 
 @author: eLRuLL
-# Aqui se maneja la conexion a la base de datos (SOLO LA CONEXION)
+# Just code to establish the database connection
 '''
 import pyodbc
 import json
@@ -13,11 +13,11 @@ class DbConnector(object):
     
     def __init__(self):
         
-        # dos bases de datos .  LA EXTERNA Y LA INTERNA
+        # two databases.  Inner and outer databases
         filesettings = open(r'dbconn\DBConnector.settings','r') # Open config file for databases parameters.
         dbsettings = json.loads(filesettings.read())
         
-        # External Database. The repository (DBLINDEXA)
+        # External Database. The repository (PROGRAMDB)
         self.__externalconnstr = r'DRIVER={' + dbsettings['driver'] + \
                             r'};SERVER=' + dbsettings['ext']['server'] + \
                             r';DATABASE=' + dbsettings['ext']['database'] + \

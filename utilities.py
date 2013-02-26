@@ -2,7 +2,7 @@
 Created on Feb 24, 2012
 
 @author: eLRuLL
-# Aqui estaran algunos 'utilities' que serviran para la realizacion del codigo
+# Here we create some 'utilities' to use along the code
 '''
 
 import pytz
@@ -11,7 +11,7 @@ from datetime import timedelta
 from dateutil.parser import parse
 from urllib.parse import urlparse
 
-# Funcion que recibe un string y devuelve el numero de segundos (unixtime) desde 1970 01 01 00:00:00 UTC
+# Function to return the number of seconds since (unixtime) 1970 01 01 00:00:00 UTC
 def strtounixtime(_time):
     # _time: string
     since = datetime(1970,1,1,0,0,0,tzinfo=pytz.utc) #1970 01 01 00:00:00 UTC
@@ -19,18 +19,18 @@ def strtounixtime(_time):
     delta = (timeobj - since)
     return delta.days*86400 + delta.seconds
 
-# Funcion que recibe un entero (unixtime) y devuelve la fecha.
+# Function which get a int (unixtime in seconds) and returns date
 def unixtimetostr(_unixtime,since=datetime(1970,1,1,0,0,0,tzinfo=pytz.utc)):
-    # _unixtime: entero (segundos)
-    # since : fecha desde donde se quieren contar los segundos
+    # _unixtime: int (segundos)
+    # since : date to count from.
     return since + timedelta(seconds = _unixtime)
 
-# Funcion para crear una URL
+# Function to create a URL
 def urlcreator(scheme,domain,path = '',params = []):
-    #scheme : tipo de protocolo Ejm: http, https, etc.
-    #domain : Dominio base de la url.
-    #=path : directorio a acceder en tal dominio.
-    # params : parametros extras a preguntar en una URL.
+    #scheme  : protocol Ejm: http, https, etc.
+    # domain : base ur domain
+    # path   : extra path of the domain
+    # params : extra parameters for the url.
     extra1 = r'://'
     extra2 = r'/'
     
@@ -44,16 +44,16 @@ def urlcreator(scheme,domain,path = '',params = []):
             rs +=r'&'
     return rs
 
-#Funcion para obtener los parametros en una URL con parametros.
+# Function to get only the parameters of a URL.
 def getUrlParameters(myurl):
-    #myurl : URL con parametros
+    #myurl : URL with parameters
     purl = urlparse(myurl)
     splitted = (purl.query).split('&')
     rs = {}
     for i in splitted:
         sp = i.split('=')
         rs[sp[0]] = sp[1]
-    return rs # Retorna un diccionario con los parametros como claves.
+    return rs # Returns a dictionary with the parameters as keys.
 
 def timewotz(_time):
     return _time.split('+')[0]

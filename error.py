@@ -2,28 +2,28 @@
 Created on Feb 23, 2012
 
 @author: eLRuLL
-# Aqui estan funciones relacionadas a errores que puedan ocurrir en cualquier parte del codigo.
+# Here they are the functions to control errors in every part of the code. Also Exceptions.
 '''
 from urllib.request import urlopen
 from urllib.error import URLError
 from time import sleep
 
-# Funcion para el control de intentos en caso de problemas con el internet
+# Function to control the attemps of connection, for cases of losing the internet connection.
 def backoff(_url,attemps=4):
-    # _url: url con que se intentara conectar.
-    # attemps: numero de intentos
+    # _url: URL to connect.
+    # attemps: number of attemps.
     c=0
     while(c < attemps):
         try:
             response_c = urlopen(_url)
             msg = str(response_c.read(),'utf-8')
             break
-        except URLError: # si sucede algun error, duerme exponencialmente.
+        except URLError: # If an error happens, sleep exponentially
             c+=1
             sleep(pow(2,c))
-    if c < attemps: ##si hubo errores controlables
+    if c < attemps: ## If the error was controlled.
         return msg
-    else: #si paso el numero de intentos
+    else: # If there were too many attemps
         raise AttempException('Backoff Error: Too many attemps (' + c + ')')
 
 # Exceptions

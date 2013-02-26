@@ -2,16 +2,16 @@
 Created on Feb 23, 2012
 
 @author: eLRuLL
-# Main actual del proyecto. Aqui se integran todos los modulos creados.
-# RECOMENDACION: Crear varios main en el futuro.
+# Main file of the project (execute from here)
+# TIP: You should create your own main file using this as a template.
 '''
 
 from fbcrawler import FbCrawler
 from mssqlconn import DbConnector
 from sqlmeths import *
 
-# Metodo para crawlear el muro de un usuario de FB.
-# AYUDA: Usar un codigo parecido a FBCrawler.parse_wall
+# Function to crawl a facebook user.
+# TIP: like the parse facebook wall
 def crawl_facebook_wall(fbid):
     fb = FbCrawler(getFreeAccessToken())
     
@@ -21,7 +21,7 @@ def crawl_facebook_wall(fbid):
     json_array = []
     for i in data['data']:
         
-        insertFbComment(theuser['id'],i) # Insertando
+        insertFbComment(theuser['id'],i) # Inserting
         json_array.append({r"method": r"GET",r"relative_url": i['from']})
         
         if i['comments'] > 0:
@@ -31,14 +31,14 @@ def crawl_facebook_wall(fbid):
             comm_json_array = []
             for j in comm_data['data']:
                 
-                insertFbComment(theuser['id'], j, i['id']) # Insertando
+                insertFbComment(theuser['id'], j, i['id']) # Inserting
                 comm_json_array.append({r"method": r"GET",r"relative_url": j['from']})
                 comm_users = fb.batch_request(comm_json_array) # Insert into DB
             
-            #########CREAR STOREDPROCEDURE PARA INSERTAR EN TABLE USUARIOS#########
+            #########CREATE STOREDPROCEDURE TO INSERTAR IN USERS TABLE#########
             #######################################################################
     users = fb.batch_request(json_array) # Insert into DB
-    #########CREAR STOREDPROCEDURE PARA INSERTAR EN TABLE USUARIOS#########
+    #########CREATE STOREDPROCEDURE TO INSERT IN USERS TABLE#########
     #######################################################################
 
 def main():

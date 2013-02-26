@@ -5,7 +5,7 @@
 Created on Feb 8, 2012
 
 @author: eLRuLL
-# Aquí se encuentra una seudo API de Facebook, creada exclusivamente para crawler.
+# Here we find a semi API for Facebook, we can use this to crawl Facebook walls.
 '''
 
 #imported modules
@@ -16,7 +16,7 @@ from error import backoff
 from utilities import urlcreator
 from sys import argv
 
-# Clase que implementa los metodos necesarios para crawlear FB
+# Class implementing the API, methods to crawl facebook.
 class FbCrawler(object):
     
     def __init__(self,access_token=''):
@@ -39,10 +39,10 @@ class FbCrawler(object):
         
     # Parse a Facebook Comment
     def parse_comment(self, pubid, since='', until='',limit=50):
-        # pubid : ID de una Facebook Publication
-        # since : Fecha desde donde crawlear(usar unixtime) (OPTIONAL)
-        # until : Fecha hasta donde crawlear(usar unixtime) (OPTIONAL)
-        # limit : Cuantas comentarios obtener por consulta. Aprox. maximo es 5000 (OPTIONAL)
+        # pubid : ID of a Facebook publication
+        # since : Date to crawl since(use unixtime) (OPTIONAL)
+        # until : Date to crawl until(use unixtime) (OPTIONAL)
+        # limit : How many comments to get from one request. Max could be 5000 (OPTIONAL)
         params = [self.__access_token,'limit=' + str(limit)]
         if since != '':
             params.append('since=' + since)
@@ -55,7 +55,7 @@ class FbCrawler(object):
         
         msg = backoff(completeurl, self.__attemps)
         response = json.loads(msg)
-        data = {} # objeto que contendra la 'data' y el 'paging'
+        data = {} # object for the variables 'data' and 'paging'
         data['data'] = []
         if 'data' in response:
             x = 0
@@ -86,9 +86,9 @@ class FbCrawler(object):
     # Parse a Facebook Publication
     def parse_publication(self, fbid, since='', until='',limit=50):
         # fbid : Facebook ID of the user we want to parse
-        # since : Fecha desde donde crawlear(usar unixtime) (OPTIONAL)
-        # until : Fecha hasta donde crawlear(usar unixtime) (OPTIONAL)
-        # limit : Cuantas publicaciones obtener por consulta. Aprox. maximo es 5000 (OPTIONAL)
+        # since : Date to crawl since (use unixtime) (OPTIONAL)
+        # until : Date to crawl until (use unixtime) (OPTIONAL)
+        # limit : How many publications to get by request. Max. 5000 (OPTIONAL)
         params = [self.__access_token,'limit=' + str(limit)]
         if since != '':
             params.append('since=' + since)
@@ -101,7 +101,7 @@ class FbCrawler(object):
         
         msg = backoff(completeurl, self.__attemps)
         response = json.loads(msg)
-        data= {} # objeto que contendra la 'data' y el 'paging'
+        data= {} # objectfor variables 'data' and 'paging'
         data['data'] = []
         if 'data' in response:
             x = 0
@@ -138,9 +138,8 @@ class FbCrawler(object):
         return data
     
     
-    # metodo que parsea el pasado de un wall y el futuro durante un tiempo determinado
-    # NO FUNCIONA ( funciona con la version anterior, ya que ahora este procedimiento debe ser hecho en conjunto con otras
-    #                funcionalidades ya que debe juntar BD, crawlear fb y hasta calificar comment
+    # Method to crawl the wall and the future of the wall for a determined time
+    # DON'T USE IT, we already cover it with the `parse_publication` and `parse_comment`
     def parse_wall(self,fbid):
         
         theuser = self.parse_user(fbid)
@@ -172,7 +171,7 @@ class FbCrawler(object):
                     time.sleep(60)
                 self.__target= open('filename','a')
         
-    # Funcion para parsear un usuario de Facebook.
+    # Method to parse a Facebook user
     def parse_user(self,userid):
         # userid : Facebook User ID
         msg = backoff(r'http://graph.facebook.com/' + userid, self.__attemps)
@@ -180,9 +179,9 @@ class FbCrawler(object):
         return response
     
     
-    # Batch Request para Usuarios de Facebook.
+    # Batch Request for Facebook users.
     def batch_request(self,json_array):
-        # json_array : Array formateado en Json donde se contienen todas las sentencias que se hara en un batch Request 
+        # json_array : Json array which contains all the requests for doing a batch request.
         msg = backoff(r'https://' + self.__api_url + r'/?batch=' + json.dumps(json_array) + r'&' + self.__access_token + r'&method=post',self.__attemps)
         
         response = json.loads(msg)
@@ -199,8 +198,8 @@ class FbCrawler(object):
         
 def main():
     
-    print ("Vamos a Crawlear la página de", fid)
-    print ("minutos:",minutos)
+    print ("Let's crawl a facebook page", fid)
+    print ("minutes:",minutos)
     my_crawler = FbCrawler(access_token)
     my_crawler.parse_wall(fid)
     my_crawler.set_minutes(minutos)
